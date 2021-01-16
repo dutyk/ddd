@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.kang.bank.persistence.mapper.AccountMapper" >
+    <select id="findByAccountId" parameterType="java.lang.String" resultType="io.kang.bank.persistence.AccountDO">
+    SELECT
+     id as id,
+     user_id as userId,
+     account_id as accountId,
+     account_number as accountNumber,
+     avaliable_amount as avaliableAmount,
+     daily_limit_amount as dailyLimitAmount,
+     currency as currency
+     FROM account
+    WHERE account_id = #{accountId}
+    </select>
+
+    <select id="findByAccountNumber" parameterType="java.lang.String" resultType="io.kang.bank.persistence.AccountDO">
+    SELECT
+     id as id,
+     user_id as userId,
+     account_id as accountId,
+     account_number as accountNumber,
+     avaliable_amount as avaliableAmount,
+     daily_limit_amount as dailyLimitAmount,
+     currency as currency
+     FROM account
+    WHERE account_number = #{accountNumber}
+    </select>
+
+    <select id="findByUserId" parameterType="java.lang.Long" resultType="io.kang.bank.persistence.AccountDO">
+    SELECT
+     id as id,
+     user_id as userId,
+     account_id as accountId,
+     account_number as accountNumber,
+     avaliable_amount as avaliableAmount,
+     daily_limit_amount as dailyLimitAmount,
+     currency as currency
+     FROM account
+    WHERE user_id = #{userId}
+    </select>
+
+    <insert id="save" parameterType="io.kang.bank.persistence.AccountDO">
+    INSERT INTO account
+    (user_id, account_id, account_number, avaliable_amount, currency, daily_limit_amount)
+    VALUES
+    (#{userId}, #{accountId}, #{accountNumber}, #{avaliableAmount}, #{currency}, #{dailyLimitAmount});
+    </insert>
+
+    <update id="update" parameterType="io.kang.bank.persistence.AccountDO">
+        UPDATE account SET
+        <if test="userId != null">
+            user_id = #{userId},
+        </if>
+        <if test="accountId != null">
+            account_id = #{accountId},
+        </if>
+        <if test="accountNumber != null">
+            account_number = #{accountNumber},
+        </if>
+        <if test="avaliableAmount != null">
+            avaliable_amount = #{avaliableAmount},
+        </if>
+        <if test="currency != null">
+            currency = #{currency},
+        </if>
+        <if test="dailyLimitAmount != null">
+            daily_limit_amount = #{dailyLimitAmount}
+        </if>
+
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM account
+    WHERE id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.kang.bank.persistence.mapper.OrderDOMapper">
+    <resultMap id="BaseResultMap" type="io.kang.bank.persistence.OrderDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="totalPrice" jdbcType="DECIMAL" property="totalPrice" />
+        <result column="orderState" jdbcType="VARCHAR" property="orderState" />
+        <result column="orderId" jdbcType="VARCHAR" property="orderId" />
+        <result column="userId" jdbcType="VARCHAR" property="userId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, totalPrice, orderState, orderId, userId
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from orders
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from orders
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="io.kang.bank.persistence.OrderDO">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into orders (id, totalPrice, orderState,
+        orderId, userId)
+        values (#{id,jdbcType=BIGINT}, #{totalPrice,jdbcType=DECIMAL}, #{orderState,jdbcType=VARCHAR},
+        #{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="io.kang.bank.persistence.OrderDO">
+        insert into orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="totalPrice != null">
+                totalPrice,
+            </if>
+            <if test="orderState != null">
+                orderState,
+            </if>
+            <if test="orderId != null">
+                orderId,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="totalPrice != null">
+                #{totalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="orderState != null">
+                #{orderState,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="io.kang.bank.persistence.OrderDO">
+        update orders
+        <set>
+            <if test="totalPrice != null">
+                totalPrice = #{totalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="orderState != null">
+                orderState = #{orderState,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                orderId = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="io.kang.bank.persistence.OrderDO">
+    update orders
+    set totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      orderState = #{orderState,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      userId = #{userId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

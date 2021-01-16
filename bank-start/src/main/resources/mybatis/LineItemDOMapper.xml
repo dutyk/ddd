@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.kang.bank.persistence.mapper.LineItemDOMapper">
+    <resultMap id="BaseResultMap" type="io.kang.bank.persistence.LineItemDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="quantity" jdbcType="BIGINT" property="quantity" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="itemId" jdbcType="VARCHAR" property="itemId" />
+        <result column="orderId" jdbcType="VARCHAR" property="orderId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, quantity, price, itemId, orderId
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="io.kang.bank.persistence.LineItemDO">
+    insert into item (id, quantity, price,
+      itemId, orderId)
+    values (#{id,jdbcType=BIGINT}, #{quantity,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL},
+      #{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="io.kang.bank.persistence.LineItemDO">
+        insert into item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="itemId != null">
+                itemId,
+            </if>
+            <if test="orderId != null">
+                orderId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=BIGINT},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="io.kang.bank.persistence.LineItemDO">
+        update item
+        <set>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=BIGINT},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="itemId != null">
+                itemId = #{itemId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                orderId = #{orderId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="io.kang.bank.persistence.LineItemDO">
+    update item
+    set quantity = #{quantity,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL},
+      itemId = #{itemId,jdbcType=VARCHAR},
+      orderId = #{orderId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
